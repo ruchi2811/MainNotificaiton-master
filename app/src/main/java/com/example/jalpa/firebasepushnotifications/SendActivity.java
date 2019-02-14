@@ -23,7 +23,7 @@ import java.util.Map;
 public class SendActivity extends AppCompatActivity {
 
     private TextView user_id_view;
-    private String mUserId;
+    //private String mUserId;
     private String mCurrentId;
 
     private EditText mMessageView;
@@ -49,16 +49,18 @@ public class SendActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
 
-        //mUserId = getIntent().getStringExtra("user_id");
+       // mUserId = getIntent().getStringExtra("user_id");
         mUserName = getIntent().getStringExtra("user_name");
 
         user_id_view.setText("Send to " + mUserName);
-        final String user_id = mAuth.getCurrentUser().getUid();
+        final String user_id = mAuth.getUid();
 
         mSendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String message = mMessageView.getText().toString();
+
+
 
 
                 if (!message.isEmpty()){
@@ -69,6 +71,9 @@ public class SendActivity extends AppCompatActivity {
                     Map<String , Object> notificationMessage = new HashMap<>();
                     notificationMessage.put("message" , message);
                     notificationMessage.put("from" , mCurrentId);
+
+                    //
+                    //Toast.makeText(SendActivity.this, ""+ user_id,Toast.LENGTH_LONG).show();
 
                     mFirestore.collection("Users/" + user_id + "/Notifications").add(notificationMessage).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
@@ -83,6 +88,8 @@ public class SendActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+                            //Toast.makeText(SendActivity.this, ""+ user_id,Toast.LENGTH_LONG).show();
+
                             Toast.makeText(SendActivity.this , "Error:" +e.getMessage(), Toast.LENGTH_LONG).show();
 
                         }
@@ -91,8 +98,10 @@ public class SendActivity extends AppCompatActivity {
 
                 }
                 else{
+                    //Toast.makeText(SendActivity.this, ""+ user_id,Toast.LENGTH_LONG).show();
 
-                    Toast.makeText(SendActivity.this , "Else portion." , Toast.LENGTH_LONG).show();
+
+                    Toast.makeText(SendActivity.this , "Else portion."  , Toast.LENGTH_LONG).show();
 
                 }
 

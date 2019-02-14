@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -64,6 +65,7 @@ public class usersFragment extends Fragment {
         super.onStart();
         usersList.clear();
 
+
         mFirestore.collection("Users").addSnapshotListener(getActivity() , new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -75,6 +77,7 @@ public class usersFragment extends Fragment {
                         Users users = doc.getDocument().toObject(Users.class).WithId(user_id);
                         usersList.add(users);
                         usersRecyclerAdapter.notifyDataSetChanged();
+
                     }
                 }
             }
