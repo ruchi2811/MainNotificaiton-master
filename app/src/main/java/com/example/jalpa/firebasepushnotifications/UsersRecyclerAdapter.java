@@ -48,7 +48,7 @@ public class UsersRecyclerAdapter extends RecyclerView.Adapter<UsersRecyclerAdap
         Glide.with(context).load(usersList.get(position).getImage()).into(user_image_view);
        //Glide.with(context).load(R.drawable.ruchi).into(user_image_view);
 
-        final String user_id = usersList.get(position).userId;
+        final String user_id = usersList.get(position).User_id;
         final String user_name = usersList.get(position).getName();
 
 
@@ -63,7 +63,9 @@ public class UsersRecyclerAdapter extends RecyclerView.Adapter<UsersRecyclerAdap
         });
 
 
+
     }
+    public static String user_id;
 
     @Override
     public int getItemCount() {

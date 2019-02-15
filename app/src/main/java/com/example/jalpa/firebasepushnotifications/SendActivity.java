@@ -23,7 +23,7 @@ import java.util.Map;
 public class SendActivity extends AppCompatActivity {
 
     private TextView user_id_view;
-    //private String mUserId;
+    private String mUserId;
     private String mCurrentId;
 
     private EditText mMessageView;
@@ -49,7 +49,7 @@ public class SendActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
 
-       // mUserId = getIntent().getStringExtra("user_id");
+         mUserId = getIntent().getStringExtra("user_id");
         mUserName = getIntent().getStringExtra("user_name");
 
         user_id_view.setText("Send to " + mUserName);
@@ -73,12 +73,12 @@ public class SendActivity extends AppCompatActivity {
                     notificationMessage.put("from" , mCurrentId);
 
                     //
-                    //Toast.makeText(SendActivity.this, ""+ user_id,Toast.LENGTH_LONG).show();
+                    Toast.makeText(SendActivity.this, ""+ mUserId,Toast.LENGTH_LONG).show();
 
-                    mFirestore.collection("Users/" + user_id + "/Notifications").add(notificationMessage).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    mFirestore.collection("Users/" + mUserId + "/Notifications").add(notificationMessage).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
-                            Toast.makeText(SendActivity.this , "Notification Sent to... " + user_id , Toast.LENGTH_LONG).show();
+                            Toast.makeText(SendActivity.this , "Notification Sent to... " + mUserId , Toast.LENGTH_LONG).show();
 
                             mMessageView.setText("");
                             mMessageProgress.setVisibility(View.INVISIBLE);
