@@ -25,6 +25,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
@@ -101,26 +102,21 @@ public class RegisterActivity extends AppCompatActivity {
 
                                                 final String download_url = uploadTask.getResult().getStorage().getDownloadUrl().toString();
 
-                                                mAuth.getCurrentUser().getIdToken(true).addOnSuccessListener(new OnSuccessListener<GetTokenResult>() {
-                                                    @Override
-                                                    public void onSuccess(GetTokenResult getTokenResult) {
-                                                        String token_id = getTokenResult.getToken();
 
-                                                        Map<String, Object> userMap = new HashMap<>();
-                                                        userMap.put("name", name);
-                                                        userMap.put("image", download_url);
-                                                        userMap.put("token_id", token_id);
+                                                String token_id = FirebaseInstanceId.getInstance().getToken();
 
-                                                        mFirestore.collection("Users").document(user_id).set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                Map<String, Object> userMap = new HashMap<>();
+                                                userMap.put("name", name);
+                                                userMap.put("image", download_url);
+                                                userMap.put("token_id", token_id);
+
+                                                mFirestore.collection("Users").document(user_id).set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                             @Override
                                                             public void onSuccess(Void aVoid) {
                                                                 mRegisterProgressBar.setVisibility(View.INVISIBLE);
 
                                                                 sendToMain();
                                                             }
-                                                        });
-
-                                                    }
                                                 });
 
 

@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -81,23 +82,20 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()){
-                                mAuth.getCurrentUser().getIdToken(true).addOnSuccessListener(new OnSuccessListener<GetTokenResult>() {
-                                    @Override
-                                    public void onSuccess(GetTokenResult getTokenResult) {
-                                        String token_id = getTokenResult.getToken();
-                                        String current_id = mAuth.getCurrentUser().getUid();
 
-                                        Map<String , Object> tokenMap = new HashMap<>();
-                                        tokenMap.put("token_id" , token_id);
 
-                                        mFirestore.collection("Users").document(current_id).update(tokenMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                String token_id = FirebaseInstanceId.getInstance().getToken();
+                                String current_id = mAuth.getCurrentUser().getUid();
+
+                                Map<String , Object> tokenMap = new HashMap<>();
+                                tokenMap.put("token_id" , token_id);
+
+                                mFirestore.collection("Users").document(current_id).update(tokenMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 sendToMain();
                                                 mProgressBar.setVisibility(View.INVISIBLE);
                                             }
-                                        });
-                                    }
                                 });
                                 /*
                                 sendToMain();
